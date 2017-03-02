@@ -17,6 +17,7 @@ void NesterovSolver<Dtype>::ComputeUpdateValue(int param_id, Dtype rate) {
   Dtype momentum = this->param_.momentum();
   Dtype local_rate = rate * net_params_lr[param_id];
   switch (Caffe::mode()) {
+  case Caffe::CUSTOM: //TODO: Implement if needed
   case Caffe::CPU: {
     // save history momentum for stepping back
     caffe_copy(net_params[param_id]->count(),

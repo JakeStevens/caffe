@@ -130,7 +130,7 @@ void SigmoidCrossEntropyLossLayer<Dtype>::Backward_cpu(
   }
 }
 
-#ifndef USE_CUDA;
+#ifndef USE_CUDA
 STUB_GPU(SigmoidCrossEntropyLossLayer);
 #endif
 

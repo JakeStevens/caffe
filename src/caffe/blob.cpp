@@ -448,6 +448,7 @@ void Blob<Dtype>::CopyFrom(const Blob& source, bool copy_diff, bool reshape) {
           static_cast<Dtype*>(data_->mutable_gpu_data()));
     }
     break;
+  case Caffe::CUSTOM: //TODO: Implement if needed
   case Caffe::CPU:
     if (copy_diff) {
       caffe_copy(count_, source.cpu_diff(),

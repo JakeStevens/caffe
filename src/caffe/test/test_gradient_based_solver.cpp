@@ -62,6 +62,9 @@ class GradientBasedSolverTest : public MultiDeviceTest<TypeParam> {
       case Caffe::GPU:
         param.set_solver_mode(SolverParameter_SolverMode_GPU);
         break;
+      case Caffe::CUSTOM:
+        param.set_solver_mode(SolverParameter_SolverMode_CUSTOM);
+        break;
       default:
         LOG(FATAL) << "Unknown Caffe mode: " << Caffe::mode();
     }

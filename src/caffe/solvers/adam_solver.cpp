@@ -43,6 +43,7 @@ void AdamSolver<Dtype>::ComputeUpdateValue(int param_id, Dtype rate) {
   const Dtype eps_hat = this->param_.delta();
 
   switch (Caffe::mode()) {
+    case Caffe::CUSTOM: //TODO: Implemented if needed
     case Caffe::CPU: {
     // update m <- \beta_1 m_{t-1} + (1-\beta_1)g_t
     caffe_cpu_axpby(N, Dtype(1)-beta1,

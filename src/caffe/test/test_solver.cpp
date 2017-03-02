@@ -26,6 +26,9 @@ class SolverTest : public MultiDeviceTest<TypeParam> {
     CHECK(google::protobuf::TextFormat::ParseFromString(proto, &param));
     // Set the solver_mode according to current Caffe::mode.
     switch (Caffe::mode()) {
+      case Caffe::CUSTOM:
+        param.set_solver_mode(SolverParameter_SolverMode_CUSTOM);
+        break;
       case Caffe::CPU:
         param.set_solver_mode(SolverParameter_SolverMode_CPU);
         break;

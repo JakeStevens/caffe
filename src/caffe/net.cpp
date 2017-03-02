@@ -916,6 +916,7 @@ void Net<Dtype>::ClearParamDiffs() {
   for (int i = 0; i < learnable_params_.size(); ++i) {
     Blob<Dtype>* blob = learnable_params_[i];
     switch (Caffe::mode()) {
+    case Caffe::CUSTOM: //TODO: Implement this if pointers used
     case Caffe::CPU:
       caffe_set(blob->count(), static_cast<Dtype>(0),
                 blob->mutable_cpu_diff());

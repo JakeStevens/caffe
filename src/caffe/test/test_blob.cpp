@@ -147,6 +147,7 @@ TYPED_TEST(BlobMathTest, TestSumOfSquares) {
   // so that the sumsq computation is done on that device.
   // (Otherwise, this would only check the CPU sumsq implementation.)
   switch (TypeParam::device) {
+  case Caffe::CUSTOM: //TODO: Implement if needed
   case Caffe::CPU:
     this->blob_->mutable_cpu_data();
     break;
@@ -165,6 +166,7 @@ TYPED_TEST(BlobMathTest, TestSumOfSquares) {
   caffe_cpu_scale(this->blob_->count(), kDiffScaleFactor, data,
                   this->blob_->mutable_cpu_diff());
   switch (TypeParam::device) {
+  case Caffe::CUSTOM: //TODO: Implement if necessary
   case Caffe::CPU:
     this->blob_->mutable_cpu_diff();
     break;
@@ -202,6 +204,7 @@ TYPED_TEST(BlobMathTest, TestAsum) {
   // so that the asum computation is done on that device.
   // (Otherwise, this would only check the CPU asum implementation.)
   switch (TypeParam::device) {
+  case Caffe::CUSTOM: //TODO: Implement if needed
   case Caffe::CPU:
     this->blob_->mutable_cpu_data();
     break;
@@ -220,6 +223,7 @@ TYPED_TEST(BlobMathTest, TestAsum) {
   caffe_cpu_scale(this->blob_->count(), kDiffScaleFactor, data,
                   this->blob_->mutable_cpu_diff());
   switch (TypeParam::device) {
+  case Caffe::CUSTOM: //TODO: implemented if needed
   case Caffe::CPU:
     this->blob_->mutable_cpu_diff();
     break;
@@ -251,6 +255,7 @@ TYPED_TEST(BlobMathTest, TestScaleData) {
   // so that the asum computation is done on that device.
   // (Otherwise, this would only check the CPU asum implementation.)
   switch (TypeParam::device) {
+  case Caffe::CUSTOM: //TODO: Implemented if needed
   case Caffe::CPU:
     this->blob_->mutable_cpu_data();
     break;
@@ -279,6 +284,7 @@ TYPED_TEST(BlobMathTest, TestScaleData) {
   EXPECT_NEAR(expected_diff_asum_before_scale, this->blob_->asum_diff(),
               this->epsilon_ * expected_diff_asum_before_scale);
   switch (TypeParam::device) {
+  case Caffe::CUSTOM: //TODO: Implemented if needed
   case Caffe::CPU:
     this->blob_->mutable_cpu_diff();
     break;

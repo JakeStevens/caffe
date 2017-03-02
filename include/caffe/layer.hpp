@@ -320,6 +320,16 @@ class Layer {
   }
 
   /**
+   * @brief Using the custom device, compute the layer output.
+   *        Fall back to Forward_cpu() if unavailable.
+   */
+  virtual void Forward_custom(const vector<Blob<Dtype>*>& bottom,
+      const vector<Blob<Dtype>*>& top) {
+    // LOG(WARNING) << "Using CPU code as backup.";
+    return Forward_cpu(bottom, top);
+  }
+
+  /**
    * @brief Using the CPU device, compute the gradients for any parameters and
    *        for the bottom blobs if propagate_down is true.
    */
@@ -338,6 +348,17 @@ class Layer {
     Backward_cpu(top, propagate_down, bottom);
   }
 
+  /**
+   * @brief Using the Custom device, compute the gradients for any parameters
+   *        and for the bottom blobs if propagate_down is true.
+   *        Fall back to Backward_cpu() if unavailable.
+   */
+  virtual void Backward_custom(const vector<Blob<Dtype>*>& top,
+      const vector<bool>& propagate_down,
+      const vector<Blob<Dtype>*>& bottom) {
+    // LOG(WARNING) << "Using CPU code as backup.";
+    Backward_cpu(top, propagate_down, bottom);
+  }
   /**
    * Called by the parent Layer's SetUp to check that the number of bottom
    * and top Blobs provided as input match the expected numbers specified by
@@ -439,6 +460,9 @@ inline Dtype Layer<Dtype>::Forward(const vector<Blob<Dtype>*>& bottom,
     }
 #endif
     break;
+  case Caffe::CUSTOM:
+    Forward_custom(bottom, top);
+    break;
   default:
     LOG(FATAL) << "Unknown caffe mode.";
   }
@@ -455,6 +479,9 @@ inline void Layer<Dtype>::Backward(const vector<Blob<Dtype>*>& top,
     break;
   case Caffe::GPU:
     Backward_gpu(top, propagate_down, bottom);
+    break;
+  case Caffe::CUSTOM:
+    Backward_custom(top, propagate_down, bottom);
     break;
   default:
     LOG(FATAL) << "Unknown caffe mode.";

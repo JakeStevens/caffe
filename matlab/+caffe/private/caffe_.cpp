@@ -61,6 +61,7 @@ static void mx_mat_to_blob(const mxArray* mx_mat, Blob<float>* blob,
   const float* mat_mem_ptr = reinterpret_cast<const float*>(mxGetData(mx_mat));
   float* blob_mem_ptr = NULL;
   switch (Caffe::mode()) {
+  case Caffe::CUSTOM: //TODO: Implement if needed
   case Caffe::CPU:
     blob_mem_ptr = (data_or_diff == DATA ?
         blob->mutable_cpu_data() : blob->mutable_cpu_diff());
