@@ -163,6 +163,7 @@ NONEMPTY_WARN_REPORT := $(BUILD_DIR)/$(WARNS_EXT)
 # Derive include and lib directories
 ##############################
 CUDA_INCLUDE_DIR := $(CUDA_DIR)/include
+CUSTOM_INCLUDE_DIR := $(CUSTOM_DIR)/include
 
 CUDA_LIB_DIR :=
 # add <cuda>/lib64 only if it exists
@@ -170,12 +171,17 @@ ifneq ("$(wildcard $(CUDA_DIR)/lib64)","")
 	CUDA_LIB_DIR += $(CUDA_DIR)/lib64
 endif
 CUDA_LIB_DIR += $(CUDA_DIR)/lib
+CUSTOM_LIB_DIR := $(CUSTOM_DIR)/lib
 
 INCLUDE_DIRS += $(BUILD_INCLUDE_DIR) ./src ./include
 ifeq ($(USE_CUDA), 1)
 	INCLUDE_DIRS += $(CUDA_INCLUDE_DIR)
 	LIBRARY_DIRS += $(CUDA_LIB_DIR)
 	LIBRARIES := cudart cublas curand
+endif
+ifeq ($(USE_CUDA), 1)
+    INCLUDE_DIRS += $(CUSTOM_INCLUDE_DIR)
+    LIBRARY_DIRS += $(CUSTOM_LIB_DIR)
 endif
 
 LIBRARIES += glog gflags protobuf boost_system boost_filesystem m hdf5_hl hdf5
@@ -348,14 +354,22 @@ ifeq ($(ALLOW_LMDB_NOLOCK), 1)
 endif
 endif
 
-# CPU-only configuration
-ifneq ($(USE_CUDA), 1)
+ifeq ($(USE_CUDA), 1)
+	COMMON_FLAGS += -DUSE_CUDA
+else ifeq ($(USE_CUSTOM), 1)
 	OBJS := $(PROTO_OBJS) $(CXX_OBJS)
 	TEST_OBJS := $(TEST_CXX_OBJS)
 	TEST_BINS := $(TEST_CXX_BINS)
 	ALL_WARNS := $(ALL_CXX_WARNS)
 	TEST_FILTER := --gtest_filter="-*GPU*"
-	COMMON_FLAGS += -DCPU_ONLY
+    COMMON_FLAGS += -DUSE_CUSTOM
+# CPU-only configuration
+else
+	OBJS := $(PROTO_OBJS) $(CXX_OBJS)
+	TEST_OBJS := $(TEST_CXX_OBJS)
+	TEST_BINS := $(TEST_CXX_BINS)
+	ALL_WARNS := $(ALL_CXX_WARNS)
+	TEST_FILTER := --gtest_filter="-*GPU*"
 endif
 
 # Python layer support

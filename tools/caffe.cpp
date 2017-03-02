@@ -208,8 +208,13 @@ int train() {
   vector<int> gpus;
   get_gpus(&gpus);
   if (gpus.size() == 0) {
+#ifdef USE_CUSTOM
+    LOG(INFO) << "Use Custom.";
+    Caffe::set_mode(Caffe::CUSTOM);
+#else
     LOG(INFO) << "Use CPU.";
     Caffe::set_mode(Caffe::CPU);
+#endif
   } else {
     ostringstream s;
     for (int i = 0; i < gpus.size(); ++i) {
@@ -281,8 +286,13 @@ int test() {
     Caffe::SetDevice(gpus[0]);
     Caffe::set_mode(Caffe::GPU);
   } else {
+#ifdef USE_CUSTOM
+    LOG(INFO) << "Use Custom.";
+    Caffe::set_mode(Caffe::CUSTOM);
+#else
     LOG(INFO) << "Use CPU.";
     Caffe::set_mode(Caffe::CPU);
+#endif
   }
   // Instantiate the caffe net.
   Net<float> caffe_net(FLAGS_model, caffe::TEST, FLAGS_level, &stages);
@@ -349,8 +359,13 @@ int time() {
     Caffe::SetDevice(gpus[0]);
     Caffe::set_mode(Caffe::GPU);
   } else {
+#ifdef USE_CUSTOM
+    LOG(INFO) << "Use Custom.";
+    Caffe::set_mode(Caffe::CUSTOM);
+#else
     LOG(INFO) << "Use CPU.";
     Caffe::set_mode(Caffe::CPU);
+#endif
   }
   // Instantiate the caffe net.
   Net<float> caffe_net(FLAGS_model, phase, FLAGS_level, &stages);

@@ -108,7 +108,7 @@ class Caffe {
   // on OSX. Also fails on Linux with CUDA 7.0.18.
   static Caffe& Get();
 
-  enum Brew { CPU, GPU };
+  enum Brew { CPU, GPU, CUSTOM };
 
   // This random number generator facade hides boost and CUDA rng
   // implementation from one another (for cross-platform compatibility).
