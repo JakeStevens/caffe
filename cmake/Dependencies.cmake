@@ -76,13 +76,13 @@ endif()
 # ---[ CUDA
 include(cmake/Cuda.cmake)
 if(NOT HAVE_CUDA)
-  if(CPU_ONLY)
+  if(!USE_CUDA)
     message(STATUS "-- CUDA is disabled. Building without it...")
   else()
     message(WARNING "-- CUDA is not detected by cmake. Building without it...")
   endif()
 
-  list(APPEND Caffe_DEFINITIONS PUBLIC -DCPU_ONLY)
+  list(APPEND Caffe_DEFINITIONS PUBLIC)
 endif()
 
 if(USE_NCCL)
